@@ -1,14 +1,16 @@
 package com.example.flightmapapp.Web;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class MapController {
 
     @GetMapping("/")
-    public String index()
+    public String index(Model model)
     {
-        return "Witaj na stronie";
+        return  "map.html";
     }
 }
