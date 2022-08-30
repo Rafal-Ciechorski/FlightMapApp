@@ -1,5 +1,6 @@
 package com.example.flightmapapp.Repository;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.Serializable;
@@ -7,7 +8,9 @@ import java.util.Collection;
 @JsonDeserialize(using = JsonDecoder.class)
 public class States implements Serializable {
 
+    @JsonProperty("time")
     private int time;
+    @JsonProperty("stateVector")
     private Collection<StateVector> flightStates;
 
     public int getTime() {
