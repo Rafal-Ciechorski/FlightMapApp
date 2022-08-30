@@ -61,21 +61,39 @@ public class JsonDecoder extends StdDeserializer<States> {
             sVector.setIcao24(jsonParser.getText());
             sVector.setCallsign(jsonParser.getText());
             sVector.setOriginCountry(jsonParser.getText());
-            sVector.getLastPositionUpdate();
-            sVector.setLastContact();
-            sVector.setLongitude();
-            sVector.setLatitude();
-            sVector.setBaroAltitude();
-            sVector.setOnGround();
-            sVector.setVelocity();
-            sVector.setHeading();
-            sVector.setVerticalRate();
-            sVector.
+            sVector.setLastPositionUpdate(jsonParser.getDoubleValue());
+            sVector.setLastContact(jsonParser.getDoubleValue());
+            sVector.setLongitude(jsonParser.getDoubleValue());
+            sVector.setLatitude(jsonParser.getDoubleValue());
+            sVector.setBaroAltitude(jsonParser.getDoubleValue());
+            sVector.setOnGround(jsonParser.getBooleanValue());
+            sVector.setVelocity(jsonParser.getDoubleValue());
+            sVector.setHeading(jsonParser.getDoubleValue());
+            sVector.setVerticalRate(jsonParser.getDoubleValue());
 
+            //sVector.setSensorsId(jsonParser.getIntValue());
 
+            next = jsonParser.nextToken();
+            if (next == JsonToken.START_ARRAY) {
+                for (next = jsonParser.nextToken(); next != null && next != JsonToken.END_ARRAY; next = jsonParser.nextToken()) {
+                    sVector.addSensorsId(jsonParser.getIntValue());
+                }
+            }
+
+            sVector.setGeoAltitude(jsonParser.getDoubleValue());
+            sVector.setSquawk(jsonParser.getText());
+            sVector.setSpi(jsonParser.getBooleanValue());
+            sVector.setPositionSource(jsonParser.getIntValue());
+
+            // consume Category token - not used at the moment
+            next=jsonParser.nextToken();
+            // consume END_ARRAY
+            next=jsonParser.nextToken();
+            // consume END_OBJECT
+            next=jsonParser.nextToken();
+
+            result.add(sVector);
         }
-
-
-
+        return result;
     }
 }

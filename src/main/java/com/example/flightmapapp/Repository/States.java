@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.io.Serializable;
 import java.util.Collection;
 @JsonDeserialize(using = JsonDecoder.class)
-public class States implements Serializable {
+public class States {
 
-    @JsonProperty("time")
+//    @JsonProperty("time")
     private int time;
-    @JsonProperty("stateVector")
+//    @JsonProperty("stateVector")
     private Collection<StateVector> flightStates;
 
     public int getTime() {

@@ -1,5 +1,8 @@
 package com.example.flightmapapp.Repository;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class StateVector {
 
     private Double geoAltitude;
@@ -17,7 +20,24 @@ public class StateVector {
     private String squawk;
     private boolean spi;
     private Double baroAltitude;
-    private PositionSource positionSource;
+    //private PositionSource positionSource;
+    private Integer positionSource;
+    private Set<Integer> sensorsId;
+
+    public void addSensorsId(int serial) {
+        if (this.sensorsId == null) {
+            this.sensorsId = new HashSet<>();
+        }
+        this.sensorsId.add(serial);
+    }
+
+    public Set<Integer> getSensorsId() {
+        return sensorsId;
+    }
+
+    public void setSensorsId(Set<Integer> sensorsId) {
+        this.sensorsId = sensorsId;
+    }
 
     public enum PositionSource {
         ADS_B,
@@ -147,11 +167,18 @@ public class StateVector {
         this.baroAltitude = baroAltitude;
     }
 
-    public PositionSource getPositionSource() {
+//    public PositionSource getPositionSource() {
+//        return positionSource;
+//    }
+    public Integer getPositionSource() {
         return positionSource;
     }
 
-    public void setPositionSource(PositionSource positionSource) {
+//    public void setPositionSource(PositionSource positionSource) {
+//        this.positionSource = positionSource;
+//    }
+
+    public void setPositionSource(Integer positionSource) {
         this.positionSource = positionSource;
     }
 
