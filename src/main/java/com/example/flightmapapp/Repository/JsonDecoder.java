@@ -66,21 +66,27 @@ public class JsonDecoder extends StdDeserializer<States> {
                 break;
             }
 
-
-
             StateVector sVector = new StateVector();
             sVector.setIcao24(jsonParser.getText());
             sVector.setCallsign(jsonParser.nextTextValue());
             sVector.setOriginCountry(jsonParser.nextTextValue());
-            sVector.setLastPositionUpdate(jsonParser.getDoubleValue());
-            sVector.setLastContact(jsonParser.getDoubleValue());
-            sVector.setLongitude(jsonParser.getDoubleValue());
+            jsonParser.nextToken();
+            sVector.setLastPositionUpdate(jsonParser.getValueAsDouble());
+            jsonParser.nextToken();
+            sVector.setLastContact(jsonParser.getValueAsDouble());
+            jsonParser.nextToken();
+            sVector.setLongitude(jsonParser.getValueAsDouble());
+            jsonParser.nextToken();
             sVector.setLatitude(jsonParser.getDoubleValue());
-            sVector.setBaroAltitude(jsonParser.getDoubleValue());
+            jsonParser.nextToken();
+            sVector.setBaroAltitude(jsonParser.getValueAsDouble());
             sVector.setOnGround(jsonParser.nextBooleanValue());
-            sVector.setVelocity(jsonParser.getDoubleValue());
-            sVector.setHeading(jsonParser.getDoubleValue());
-            sVector.setVerticalRate(jsonParser.getDoubleValue());
+            jsonParser.nextToken();
+            sVector.setVelocity(jsonParser.getValueAsDouble());
+            jsonParser.nextToken();
+            sVector.setHeading(jsonParser.getValueAsDouble());
+            jsonParser.nextToken();
+            sVector.setVerticalRate(jsonParser.getValueAsDouble());
 
             //sVector.setSensorsId(jsonParser.getIntValue());
 
@@ -91,17 +97,19 @@ public class JsonDecoder extends StdDeserializer<States> {
                 }
             }
 
-            sVector.setGeoAltitude(jsonParser.getDoubleValue());
-            sVector.setSquawk(jsonParser.getText());
-            sVector.setSpi(jsonParser.getBooleanValue());
+            jsonParser.nextToken();
+            sVector.setGeoAltitude(jsonParser.getValueAsDouble());
+            sVector.setSquawk(jsonParser.nextTextValue());
+            sVector.setSpi(jsonParser.nextBooleanValue());
+            jsonParser.nextToken();
             sVector.setPositionSource(jsonParser.getIntValue());
 
             // consume Category token - not used at the moment
-            next=jsonParser.nextToken();
+            jsonParser.nextToken();
             // consume END_ARRAY
-            next=jsonParser.nextToken();
+            jsonParser.nextToken();
             // consume END_OBJECT
-            next=jsonParser.nextToken();
+           // jsonParser.nextToken();
 
             result.add(sVector);
         }
