@@ -20,6 +20,11 @@ public class JsonDecoder extends StdDeserializer<States> {
         super(States.class);
     }
 
+//    @Override
+//    public States deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+//        return null;
+//    }
+
     @Override
     public States deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
         if (jsonParser.getCurrentToken() != null && jsonParser.getCurrentToken() != JsonToken.START_OBJECT) {
@@ -52,21 +57,27 @@ public class JsonDecoder extends StdDeserializer<States> {
 
         for (JsonToken next = jsonParser.nextToken(); next != null && next != JsonToken.END_ARRAY ; next = jsonParser.nextToken())
         {
+            if(next == JsonToken.START_ARRAY)
+            {
+                continue;
+            }
             if(next == JsonToken.END_OBJECT)
             {
                 break;
             }
 
+
+
             StateVector sVector = new StateVector();
             sVector.setIcao24(jsonParser.getText());
-            sVector.setCallsign(jsonParser.getText());
-            sVector.setOriginCountry(jsonParser.getText());
+            sVector.setCallsign(jsonParser.nextTextValue());
+            sVector.setOriginCountry(jsonParser.nextTextValue());
             sVector.setLastPositionUpdate(jsonParser.getDoubleValue());
             sVector.setLastContact(jsonParser.getDoubleValue());
             sVector.setLongitude(jsonParser.getDoubleValue());
             sVector.setLatitude(jsonParser.getDoubleValue());
             sVector.setBaroAltitude(jsonParser.getDoubleValue());
-            sVector.setOnGround(jsonParser.getBooleanValue());
+            sVector.setOnGround(jsonParser.nextBooleanValue());
             sVector.setVelocity(jsonParser.getDoubleValue());
             sVector.setHeading(jsonParser.getDoubleValue());
             sVector.setVerticalRate(jsonParser.getDoubleValue());

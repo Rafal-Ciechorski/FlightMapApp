@@ -24,6 +24,8 @@ public class StateVector {
     private Integer positionSource;
     private Set<Integer> sensorsId;
 
+
+
     public void addSensorsId(int serial) {
         if (this.sensorsId == null) {
             this.sensorsId = new HashSet<>();

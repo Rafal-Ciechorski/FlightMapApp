@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.squareup.okhttp.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -24,6 +25,13 @@ public class OpenSkyApi {
     private final ObjectMapper mapper = new ObjectMapper();
 
     private final OkHttpClient okHttpClient = new OkHttpClient();
+
+    public OpenSkyApi()
+    {
+        SimpleModule simpleModule = new SimpleModule();
+        simpleModule.addDeserializer(States.class, new JsonDecoder());
+        mapper.registerModule(simpleModule);
+    }
 
 
     /** Make the actual HTTP Request and return the parsed response
@@ -70,7 +78,7 @@ public class OpenSkyApi {
      * Get states from server and handle errors
      * @throws IOException if there was an HTTP error
      */
-    private States getStates(String baseUri, ArrayList<AbstractMap.Entry<String,String>> nvps) throws IOException {
+    private States getSkyStates(String baseUri, ArrayList<AbstractMap.Entry<String,String>> nvps) throws IOException {
         try {
             return getResponse(baseUri, nvps);
         } catch (MalformedURLException e) {
@@ -101,7 +109,7 @@ public class OpenSkyApi {
             }
         }
         nvps.add(new AbstractMap.SimpleImmutableEntry<>("time", Integer.toString(time)));
-        return getStates(STATES_URI, nvps);
+        return getSkyStates(STATES_URI, nvps);
     }
 
 
