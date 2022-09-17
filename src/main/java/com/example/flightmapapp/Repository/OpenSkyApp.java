@@ -12,8 +12,8 @@ public class OpenSkyApp {
       OpenSkyApi openSkyApi = new OpenSkyApi();
 
       openSkyApi.getStates(0,null);
-      //States states = openSkyApi.getStates(0,null);
-     // Collection<StateVector> stateCollection = states.getStates();
+      States states = openSkyApi.getStates(0,null);
+     //Collection<StateVector> stateCollection = states.getStates();
 
     }
 

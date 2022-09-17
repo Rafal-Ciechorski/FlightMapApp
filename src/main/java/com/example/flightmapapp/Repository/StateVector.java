@@ -20,8 +20,8 @@ public class StateVector {
     private String squawk;
     private boolean spi;
     private Double baroAltitude;
-    //private PositionSource positionSource;
-    private Integer positionSource;
+    private PositionSource positionSource;
+    //private Integer positionSource;
     private Set<Integer> sensorsId;
 
 
@@ -169,20 +169,20 @@ public class StateVector {
         this.baroAltitude = baroAltitude;
     }
 
-//    public PositionSource getPositionSource() {
-//        return positionSource;
-//    }
-    public Integer getPositionSource() {
+    public PositionSource getPositionSource() {
         return positionSource;
     }
-
-//    public void setPositionSource(PositionSource positionSource) {
-//        this.positionSource = positionSource;
+//    public Integer getPositionSource() {
+//        return positionSource;
 //    }
 
-    public void setPositionSource(Integer positionSource) {
+    public void setPositionSource(PositionSource positionSource) {
         this.positionSource = positionSource;
     }
+
+//    public void setPositionSource(Integer positionSource) {
+//        this.positionSource = positionSource;
+//    }
 
     @Override
     public String toString() {

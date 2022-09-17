@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-
+@JsonDeserialize
 public class JsonDecoder extends StdDeserializer<States> {
 
 
@@ -20,10 +20,6 @@ public class JsonDecoder extends StdDeserializer<States> {
         super(States.class);
     }
 
-//    @Override
-//    public States deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
-//        return null;
-//    }
 
     @Override
     public States deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
@@ -66,27 +62,20 @@ public class JsonDecoder extends StdDeserializer<States> {
                 break;
             }
 
+
             StateVector sVector = new StateVector();
             sVector.setIcao24(jsonParser.getText());
             sVector.setCallsign(jsonParser.nextTextValue());
             sVector.setOriginCountry(jsonParser.nextTextValue());
-            jsonParser.nextToken();
-            sVector.setLastPositionUpdate(jsonParser.getValueAsDouble());
-            jsonParser.nextToken();
-            sVector.setLastContact(jsonParser.getValueAsDouble());
-            jsonParser.nextToken();
-            sVector.setLongitude(jsonParser.getValueAsDouble());
-            jsonParser.nextToken();
-            sVector.setLatitude(jsonParser.getDoubleValue());
-            jsonParser.nextToken();
-            sVector.setBaroAltitude(jsonParser.getValueAsDouble());
-            sVector.setOnGround(jsonParser.nextBooleanValue());
-            jsonParser.nextToken();
-            sVector.setVelocity(jsonParser.getValueAsDouble());
-            jsonParser.nextToken();
-            sVector.setHeading(jsonParser.getValueAsDouble());
-            jsonParser.nextToken();
-            sVector.setVerticalRate(jsonParser.getValueAsDouble());
+            sVector.setLastPositionUpdate(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setLastContact(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setLongitude(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setLatitude(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setBaroAltitude(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setOnGround(jsonParser.nextBooleanValue() != null ? true : false);
+            sVector.setVelocity(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setHeading(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
+            sVector.setVerticalRate(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
 
             //sVector.setSensorsId(jsonParser.getIntValue());
 
@@ -97,15 +86,20 @@ public class JsonDecoder extends StdDeserializer<States> {
                 }
             }
 
-            jsonParser.nextToken();
-            sVector.setGeoAltitude(jsonParser.getValueAsDouble());
+            sVector.setGeoAltitude(jsonParser.nextToken() != null && jsonParser.getCurrentToken() != JsonToken.VALUE_NULL ? jsonParser.getDoubleValue() : null);
             sVector.setSquawk(jsonParser.nextTextValue());
+
             sVector.setSpi(jsonParser.nextBooleanValue());
+
+            // Skipping the position source
             jsonParser.nextToken();
-            sVector.setPositionSource(jsonParser.getIntValue());
 
             // consume Category token - not used at the moment
             jsonParser.nextToken();
+            while (next != null && next != JsonToken.END_ARRAY) {
+                // ignore
+                next = jsonParser.nextToken();
+            }
             // consume END_ARRAY
             jsonParser.nextToken();
             // consume END_OBJECT
@@ -115,4 +109,5 @@ public class JsonDecoder extends StdDeserializer<States> {
         }
         return result;
     }
+
 }
